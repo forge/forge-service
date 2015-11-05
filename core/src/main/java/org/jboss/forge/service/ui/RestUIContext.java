@@ -29,6 +29,7 @@ public class RestUIContext extends AbstractUIContext
    private final Resource<?> selection;
    private final Iterable<UIContextListener> listeners;
    private final RestUIProvider provider = new RestUIProvider();
+   private boolean closed;
 
    public RestUIContext(Resource<?> selection, Iterable<UIContextListener> listeners)
    {
@@ -49,6 +50,9 @@ public class RestUIContext extends AbstractUIContext
    @Override
    public void close()
    {
+      if (closed)
+         return;
+      closed = true;
       super.close();
       for (UIContextListener listener : listeners)
       {

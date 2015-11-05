@@ -37,7 +37,7 @@ public class ForgeInitializer
     */
    public void initialize(@Observes @Initialized(ApplicationScoped.class) Object init, FurnaceProducer furnaceProducer)
    {
-      // lets ensure that the addons folder is initialised
+      // lets ensure that the addons folder is initialized
       File repoDir = new File(
                "/home/ggastald/workspace/forge-core-2.0/dist/target/forge-distribution-3.0.0-SNAPSHOT/addons");
       LOG.info("initializing furnace with folder: " + repoDir.getAbsolutePath());

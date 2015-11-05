@@ -10,7 +10,7 @@
    <artifactId>forge-service-parent</artifactId>
    <version>0.0.1-SNAPSHOT</version>
    <packaging>pom</packaging>
-   <name>Forge :: Service Parent</name>
+   <name>Forge Service :: Parent</name>
    <properties>
       <furnace.version>2.22.6.Final</furnace.version>
       <forge.version>3.0.0-SNAPSHOT</forge.version>

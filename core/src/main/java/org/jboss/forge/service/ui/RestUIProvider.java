@@ -25,21 +25,24 @@ import org.jboss.forge.addon.ui.output.UIOutput;
 public class RestUIProvider implements UIProvider
 {
 
-   private final UIOutput output;
    private ByteArrayOutputStream out = new ByteArrayOutputStream();
    private ByteArrayOutputStream err = new ByteArrayOutputStream();
-   private final String uiName = "REST UIProvider";
-
-   public RestUIProvider()
-   {
-      super();
-      this.output = new RestUIOutput(out, err);
-   }
+   private final UIOutput output = new RestUIOutput(out, err);
+   private final UIDesktop desktop = new DefaultUIDesktop();
+   private boolean gui = true;
 
    @Override
    public boolean isGUI()
    {
-      return true;
+      return gui;
+   }
+
+   /**
+    * @param gui the gui to set
+    */
+   public void setGUI(boolean gui)
+   {
+      this.gui = gui;
    }
 
    @Override
@@ -51,7 +54,7 @@ public class RestUIProvider implements UIProvider
    @Override
    public UIDesktop getDesktop()
    {
-      return new DefaultUIDesktop();
+      return desktop;
    }
 
    public String getOut()
@@ -67,12 +70,19 @@ public class RestUIProvider implements UIProvider
    @Override
    public String getName()
    {
-      return uiName;
+      return "REST UIProvider";
    }
 
    @Override
    public boolean isEmbedded()
    {
-      return false;
+      return true;
    }
+
+   public void clearOutput()
+   {
+      out.reset();
+      err.reset();
+   }
+
 }

@@ -22,10 +22,6 @@
          <artifactId>furnace</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.jboss.forge.furnace</groupId>
-         <artifactId>furnace-se</artifactId>
-      </dependency>
-      <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>environment-api</artifactId>
       </dependency>

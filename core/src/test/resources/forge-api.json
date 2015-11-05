@@ -1,0 +1,74 @@
+// Get available commands for a given resource. 
+//http://localhost:8588/api/forge/commands/project-camel-component-list
+GET /commands
+{
+	"resource" : "someSelectedFolderOrFileName"
+}
+
+GET /command/metadata
+// Get command metadata
+{
+	"name" : "Project: New",
+	"enabled" : true, 
+	"wizard" : true,
+	"inputs" : [
+		{"name": "named", 		"valueType": "String", 	"defaultValue" : "example", "inputType" : "org.jboss.forge.inputType.TEXTBOX"},
+		{"name": "overwrite", 	"valueType": "Boolean", "defaultValue" : "false", 	"inputType" : "org.jboss.forge.inputType.CHECKBOX"}
+	]
+}
+
+POST /command/validate
+// Validate command state
+{
+	"name" : "Project: New",
+	"inputs" : [
+		{"name": "named", 		"valueType": "String", 	"defaultValue" : "example", "inputType" : "org.jboss.forge.inputType.TEXTBOX"},
+		{"name": "overwrite", 	"valueType": "Boolean", "defaultValue" : "false", 	"inputType" : "org.jboss.forge.inputType.CHECKBOX"}
+	]
+}
+
+// Result of command validate
+{
+	"canMoveToNextPage" : false,
+	"canFinish" : false,
+	"messages" : [
+		{"type" : "ERROR", "description": "Class name should not contain special chars", "input" : "className"}
+	]
+}
+
+
+
+POST /command/execute
+// Request command execution
+{
+ "resource": "someSelectedFolderOrFileName",
+  "inputs":  {
+  	// Inputs will always be sent as String
+    "foo": "bar",
+  },
+  // Add prompt queue for avoiding REQUEST_INFO results (add question ?)
+  "promptQueue": ["something"]
+}
+
+RESPONSE: 
+// UIPrompt.prompt is called
+{
+	"outcome": "REQUIRES_INPUT",
+	"message" : "Type your name"
+	"request" : { /* Original request */},
+	out: "",
+	err: ""
+
+}
+
+RESPONSE: 
+// Command execution result
+{
+	"outcome" : "SUCCESS or FAILED",
+	"resource" : "new-folder",
+	"messages" : [
+		{"type" : "INFO", "description": "A message"}
+	],
+	out: "",
+	err: ""
+}
