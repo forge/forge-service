@@ -11,7 +11,9 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
 import javax.inject.Inject;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.jboss.forge.addon.convert.Converter;
@@ -24,6 +26,9 @@ import org.jboss.forge.addon.ui.input.SelectComponent;
 import org.jboss.forge.addon.ui.input.SingleValued;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.output.UIMessage;
+import org.jboss.forge.addon.ui.result.CompositeResult;
+import org.jboss.forge.addon.ui.result.Failed;
+import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.util.InputComponents;
 
 /**
@@ -31,12 +36,12 @@ import org.jboss.forge.addon.ui.util.InputComponents;
  * 
  * @author <a href="mailto:ggastald@redhat.com">George Gastaldi</a>
  */
-public class CommandDescriber
+public class UICommandHelper
 {
    private final ConverterFactory converterFactory;
 
    @Inject
-   public CommandDescriber(ConverterFactory converterFactory)
+   public UICommandHelper(ConverterFactory converterFactory)
    {
       this.converterFactory = converterFactory;
    }
@@ -135,6 +140,53 @@ public class CommandDescriber
       builder.add("messages", messages);
    }
 
+   public void describeExecution(JsonObjectBuilder builder, CommandController controller) throws Exception
+   {
+      Result result = controller.execute();
+      describeResult(builder, result);
+   }
+
+   public void populateController(JsonObject content, CommandController controller)
+   {
+      JsonArray inputArray = content.getJsonArray("inputs");
+      for (int i = 0; i < inputArray.size(); i++)
+      {
+         JsonObject input = inputArray.getJsonObject(i);
+         String inputName = input.getString("name");
+         String inputValue = input.getString("value");
+         if (controller.hasInput(inputName))
+            controller.setValueFor(inputName, inputValue);
+      }
+   }
+
+   /**
+    * @param builder
+    * @param result
+    */
+   public void describeResult(JsonObjectBuilder builder, Result result)
+   {
+      JsonArrayBuilder array = createArrayBuilder();
+      if (result instanceof CompositeResult)
+      {
+         for (Result r : ((CompositeResult) result).getResults())
+         {
+            array.add(_describeResult(createObjectBuilder(), r));
+         }
+      }
+      else
+      {
+         array.add(_describeResult(createObjectBuilder(), result));
+      }
+      builder.add("result", array);
+   }
+
+   private JsonObjectBuilder _describeResult(JsonObjectBuilder builder, Result result)
+   {
+      builder.add("status", (result instanceof Failed) ? "FAILED" : "SUCCESS");
+      addOptional(builder, "message", result.getMessage());
+      return builder;
+   }
+
    private void addOptional(JsonObjectBuilder builder, String name, Object value)
    {
       if (value != null)
@@ -142,4 +194,5 @@ public class CommandDescriber
          builder.add(name, value.toString());
       }
    }
+
 }

@@ -9,13 +9,13 @@
    <artifactId>forge-service-core</artifactId>
    <name>Forge :: Service Core</name>
    <dependencies>
-      
+
       <dependency>
          <groupId>javax</groupId>
          <artifactId>javaee-api</artifactId>
          <scope>provided</scope>
       </dependency>
-      
+
       <!-- Forge APIs -->
       <dependency>
          <groupId>org.jboss.forge.furnace</groupId>
@@ -53,6 +53,13 @@
       <dependency>
          <groupId>org.jboss.forge.addon</groupId>
          <artifactId>projects-api</artifactId>
+      </dependency>
+      <!-- Test dependencies -->
+      <dependency>
+         <groupId>com.jayway.restassured</groupId>
+         <artifactId>rest-assured</artifactId>
+         <version>2.7.0</version>
+         <scope>test</scope>
       </dependency>
    </dependencies>
 </project>

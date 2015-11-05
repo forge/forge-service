@@ -12,7 +12,7 @@
    <packaging>pom</packaging>
    <name>Forge Service :: Parent</name>
    <properties>
-      <furnace.version>2.22.6.Final</furnace.version>
+      <furnace.version>2.22.7.Final</furnace.version>
       <forge.version>3.0.0-SNAPSHOT</forge.version>
       <junit.version>4.12</junit.version>
       <maven.compiler.source>1.8</maven.compiler.source>

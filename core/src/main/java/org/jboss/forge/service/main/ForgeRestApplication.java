@@ -26,7 +26,7 @@ import javax.ws.rs.core.Application;
 import org.jboss.forge.service.rest.CommandsResource;
 import org.jboss.forge.service.rest.JsonMessageWriter;
 
-@ApplicationPath("/")
+@ApplicationPath("/api")
 public class ForgeRestApplication extends Application
 {
    @Inject

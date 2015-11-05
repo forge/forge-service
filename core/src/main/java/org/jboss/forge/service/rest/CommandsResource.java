@@ -26,7 +26,9 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -43,14 +45,15 @@ import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
+import org.jboss.forge.addon.ui.controller.WizardCommandController;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.StringUtils;
-import org.jboss.forge.service.util.CommandDescriber;
+import org.jboss.forge.service.util.UICommandHelper;
 
-@Path("/api/forge")
+@Path("/forge")
 public class CommandsResource
 {
    @Inject
@@ -66,12 +69,15 @@ public class CommandsResource
    private Iterable<UIContextListener> contextListeners;
 
    @Inject
-   private CommandDescriber commands;
+   private UICommandHelper helper;
 
    @GET
-   public String getInfo()
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject getInfo()
    {
-      return Versions.getImplementationVersionFor(UIContext.class).toString();
+      return createObjectBuilder()
+               .add("version", Versions.getImplementationVersionFor(UIContext.class).toString())
+               .build();
    }
 
    @GET
@@ -102,22 +108,96 @@ public class CommandsResource
             throws Exception
    {
       JsonObjectBuilder builder = createObjectBuilder();
-      try (RestUIContext context = createUIContext(resource))
+      try (CommandController controller = createCommandController(name, resource))
       {
-         // As the name is shellified, it needs to be false
-         context.getProvider().setGUI(false);
-         UICommand command = commandFactory.getCommandByName(context, name);
-         if (command == null)
+         helper.describeController(builder, controller);
+      }
+      return builder.build();
+   }
+
+   @POST
+   @Path("/command/{name}/validate")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject validateCommand(@PathParam("name") String name, JsonObject content)
+            throws Exception
+   {
+      String resource = content.getString("resource");
+      JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = createCommandController(name, resource))
+      {
+         helper.populateController(content, controller);
+         helper.describeController(builder, controller);
+      }
+      return builder.build();
+   }
+
+   @POST
+   @Path("/command/{name}/next")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject nextStep(@PathParam("name") String name, JsonObject content)
+            throws Exception
+   {
+      String resource = content.getString("resource");
+      int stepIndex = content.getInt("stepIndex", 1);
+      JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = createCommandController(name, resource))
+      {
+         if (!(controller instanceof WizardCommandController))
          {
-            throw new WebApplicationException(Status.NOT_FOUND);
+            throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
          }
-         context.getProvider().setGUI(true);
-         try (CommandController controller = controllerFactory.createController(context,
-                  new RestUIRuntime(Collections.emptyList()), command))
+         WizardCommandController wizardController = (WizardCommandController) controller;
+         helper.populateController(content, wizardController);
+         boolean exists = false;
+         for (int i = 0; i < stepIndex; i++)
          {
-            controller.initialize();
-            commands.describeController(builder, controller);
+            if (wizardController.canMoveToNextStep())
+            {
+               wizardController.next().initialize();
+               helper.populateController(content, wizardController);
+               exists = true;
+            }
+            else
+            {
+               exists = false;
+               break;
+            }
          }
+         if (exists)
+         {
+            helper.describeInputs(builder, controller);
+         }
+         helper.describeValidation(builder, controller);
+      }
+      return builder.build();
+   }
+
+   @POST
+   @Path("/command/{name}/execute")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public JsonObject executeCommand(@PathParam("name") String name, JsonObject content)
+            throws Exception
+   {
+      String resource = content.getString("resource");
+      JsonObjectBuilder builder = createObjectBuilder();
+      try (CommandController controller = createCommandController(name, resource))
+      {
+         if (!(controller instanceof WizardCommandController))
+         {
+            throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
+         }
+         WizardCommandController wizardController = (WizardCommandController) controller;
+         helper.populateController(content, wizardController);
+         while (wizardController.canMoveToNextStep())
+         {
+            wizardController.next().initialize();
+            helper.populateController(content, controller);
+         }
+         helper.describeValidation(builder, controller);
+         helper.describeExecution(builder, controller);
       }
       return builder.build();
    }
@@ -127,5 +207,22 @@ public class CommandsResource
       // TODO: Change this
       Resource<File> selection = resourceFactory.create(OperatingSystemUtils.getTempDirectory());
       return new RestUIContext(selection, contextListeners);
+   }
+
+   private CommandController createCommandController(String name, String resource) throws Exception
+   {
+      RestUIContext context = createUIContext(resource);
+      // As the name is shellified, it needs to be false
+      context.getProvider().setGUI(false);
+      UICommand command = commandFactory.getCommandByName(context, name);
+      if (command == null)
+      {
+         throw new WebApplicationException(Status.NOT_FOUND);
+      }
+      context.getProvider().setGUI(true);
+      CommandController controller = controllerFactory.createController(context,
+               new RestUIRuntime(Collections.emptyList()), command);
+      controller.initialize();
+      return controller;
    }
 }
