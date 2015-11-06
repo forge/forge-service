@@ -1,0 +1,11 @@
+language: java
+
+jdk:
+  - oraclejdk8
+  
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#forge"
+    use_notice: true
+sudo: false
