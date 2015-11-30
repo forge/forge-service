@@ -1,4 +1,6 @@
 forge-service
 =============
 
+image:https://travis-ci.org/forge/forge-service.svg?branch=master["Build Status", link="https://travis-ci.org/forge/forge-service"]
+
 Running Forge from a RESTFul application
