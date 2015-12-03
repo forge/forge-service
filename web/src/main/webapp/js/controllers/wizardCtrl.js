@@ -1,12 +1,12 @@
 angular.module('jboss-forge').controller(
 		'wizardCtrl',
 		function($scope, $state, $stateParams, $http) {
-			var createPayload = function(v) {
+			var createPayload = function(model) {
 				var inputs = [];
-				for (i in v) {
+				for (att in model) {
 					inputs.push({
-						"name" : i,
-						"value" : v[i] || ""
+						"name" : att,
+						"value" : model[att] || ""
 					});
 				}
 				return {
@@ -33,11 +33,10 @@ angular.module('jboss-forge').controller(
 								$scope.wizardModel = createModel(data);
 							});
 			// Watch for model changes
-			$scope.$watchCollection('wizardModel', function(v) {
-				console.log(v);
-				if (v == null)
+			$scope.$watchCollection('wizardModel', function(model) {
+				if (model == null)
 					return;
-				var payload = createPayload(v);
+				var payload = createPayload(model);
 				$http.post(
 						'/forge-service/api/forge/command/'
 								+ $stateParams.wizardId + '/validate', payload)
@@ -56,8 +55,8 @@ angular.module('jboss-forge').controller(
 				});
 			}
 
-			$scope.finish = function() {
-				var payload = createPayload(v);
+			$scope.finish = function(model) {
+				var payload = createPayload(model);
 				$http.post(
 						'/forge-service/api/forge/command/'
 								+ $stateParams.wizardId + '/execute', payload)
