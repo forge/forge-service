@@ -94,6 +94,7 @@ public class CommandsResource
             String shellifiedName = StringUtils.shellifyCommandName(command);
             arrayBuilder.add(
                      createObjectBuilder()
+                              .add("id", shellifiedName)
                               .add("name", command)
                               .add("href", "/api/forge/command/" + shellifiedName));
          }

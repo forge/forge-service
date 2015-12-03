@@ -24,7 +24,6 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.jboss.forge.service.rest.CommandsResource;
-import org.jboss.forge.service.rest.JsonMessageWriter;
 
 @ApplicationPath("/api")
 public class ForgeRestApplication extends Application
@@ -36,11 +35,5 @@ public class ForgeRestApplication extends Application
    public Set<Object> getSingletons()
    {
       return new HashSet<>(Arrays.asList(commandsResource));
-   }
-
-   @Override
-   public Set<Class<?>> getClasses()
-   {
-      return new HashSet<>(Arrays.asList(JsonMessageWriter.class));
    }
 }

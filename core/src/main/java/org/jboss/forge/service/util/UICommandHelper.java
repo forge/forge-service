@@ -24,6 +24,10 @@ import org.jboss.forge.addon.ui.input.InputComponent;
 import org.jboss.forge.addon.ui.input.ManyValued;
 import org.jboss.forge.addon.ui.input.SelectComponent;
 import org.jboss.forge.addon.ui.input.SingleValued;
+import org.jboss.forge.addon.ui.input.UIInput;
+import org.jboss.forge.addon.ui.input.UIInputMany;
+import org.jboss.forge.addon.ui.input.UISelectMany;
+import org.jboss.forge.addon.ui.input.UISelectOne;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.output.UIMessage;
 import org.jboss.forge.addon.ui.result.CompositeResult;
@@ -98,6 +102,25 @@ public class UICommandHelper
                valueChoices.add(inputConverter.convert(valueChoice));
             }
             objBuilder.add("valueChoices", valueChoices);
+            if (input instanceof UISelectMany)
+            {
+               objBuilder.add("class", UISelectMany.class.getSimpleName());
+            }
+            else
+            {
+               objBuilder.add("class", UISelectOne.class.getSimpleName());
+            }
+         }
+         else
+         {
+            if (input instanceof UIInputMany)
+            {
+               objBuilder.add("class", UIInputMany.class.getSimpleName());
+            }
+            else
+            {
+               objBuilder.add("class", UIInput.class.getSimpleName());
+            }
          }
          if (inputConverter == null)
          {
