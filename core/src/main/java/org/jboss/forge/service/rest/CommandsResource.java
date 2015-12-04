@@ -127,8 +127,10 @@ public class CommandsResource
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = createCommandController(name, resource))
       {
-         helper.populateController(content, controller);
-         helper.describeController(builder, controller);
+         helper.populateControllerAllInputs(content, controller);
+         helper.describeCurrentState(builder, controller);
+         helper.describeValidation(builder, controller);
+         helper.describeInputs(builder, controller);
       }
       return builder.build();
    }
@@ -151,26 +153,18 @@ public class CommandsResource
          }
          WizardCommandController wizardController = (WizardCommandController) controller;
          helper.populateController(content, wizardController);
-         boolean exists = false;
          for (int i = 0; i < stepIndex; i++)
          {
             if (wizardController.canMoveToNextStep())
             {
                wizardController.next().initialize();
                helper.populateController(content, wizardController);
-               exists = true;
-            }
-            else
-            {
-               exists = false;
-               break;
             }
          }
-         if (exists)
-         {
-            helper.describeInputs(builder, controller);
-         }
+         helper.describeMetadata(builder, controller);
+         helper.describeCurrentState(builder, controller);
          helper.describeValidation(builder, controller);
+         helper.describeInputs(builder, controller);
       }
       return builder.build();
    }
@@ -186,17 +180,7 @@ public class CommandsResource
       JsonObjectBuilder builder = createObjectBuilder();
       try (CommandController controller = createCommandController(name, resource))
       {
-         if (!(controller instanceof WizardCommandController))
-         {
-            throw new WebApplicationException("Controller is not a wizard", Status.BAD_REQUEST);
-         }
-         WizardCommandController wizardController = (WizardCommandController) controller;
-         helper.populateController(content, wizardController);
-         while (wizardController.canMoveToNextStep())
-         {
-            wizardController.next().initialize();
-            helper.populateController(content, controller);
-         }
+         helper.populateControllerAllInputs(content, controller);
          helper.describeValidation(builder, controller);
          helper.describeExecution(builder, controller);
       }

@@ -10,11 +10,17 @@ package org.jboss.forge.service.util;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
+import javax.json.JsonValue;
+import javax.json.JsonValue.ValueType;
 
 import org.jboss.forge.addon.convert.Converter;
 import org.jboss.forge.addon.convert.ConverterFactory;
@@ -52,26 +58,41 @@ public class UICommandHelper
 
    public void describeController(JsonObjectBuilder builder, CommandController controller)
    {
-      UICommandMetadata metadata = controller.getMetadata();
-      builder.add("deprecated", metadata.isDeprecated());
-      addOptional(builder, "category", metadata.getCategory());
-      addOptional(builder, "name", metadata.getName());
-      addOptional(builder, "description", metadata.getDescription());
-      addOptional(builder, "deprecatedMessage", metadata.getDeprecatedMessage());
-      builder.add("valid", controller.isValid());
-      builder.add("canExecute", controller.canExecute());
+      describeMetadata(builder, controller);
+      describeCurrentState(builder, controller);
+      describeValidation(builder, controller);
+      describeInputs(builder, controller);
+   }
+
+   public void describeCurrentState(JsonObjectBuilder builder, CommandController controller)
+   {
+      JsonObjectBuilder stateBuilder = createObjectBuilder();
+      stateBuilder.add("valid", controller.isValid());
+      stateBuilder.add("canExecute", controller.canExecute());
       if (controller instanceof WizardCommandController)
       {
-         builder.add("wizard", true);
-         builder.add("canMoveToNextStep", ((WizardCommandController) controller).canMoveToNextStep());
-         builder.add("canMoveToPreviousStep", ((WizardCommandController) controller).canMoveToPreviousStep());
+         stateBuilder.add("wizard", true);
+         stateBuilder.add("canMoveToNextStep", ((WizardCommandController) controller).canMoveToNextStep());
+         stateBuilder.add("canMoveToPreviousStep", ((WizardCommandController) controller).canMoveToPreviousStep());
       }
       else
       {
-         builder.add("wizard", false);
+         stateBuilder.add("wizard", false);
       }
-      describeValidation(builder, controller);
-      describeInputs(builder, controller);
+      builder.add("state", stateBuilder);
+   }
+
+   public void describeMetadata(JsonObjectBuilder builder, CommandController controller)
+   {
+      UICommandMetadata metadata = controller.getMetadata();
+      JsonObjectBuilder metadataBuilder = createObjectBuilder();
+
+      metadataBuilder.add("deprecated", metadata.isDeprecated());
+      addOptional(metadataBuilder, "category", metadata.getCategory());
+      addOptional(metadataBuilder, "name", metadata.getName());
+      addOptional(metadataBuilder, "description", metadata.getDescription());
+      addOptional(metadataBuilder, "deprecatedMessage", metadata.getDeprecatedMessage());
+      builder.add("metadata", metadataBuilder);
    }
 
    @SuppressWarnings("unchecked")
@@ -88,6 +109,7 @@ public class UICommandHelper
                   .add("inputType", InputComponents.getInputType(input))
                   .add("enabled", input.isEnabled())
                   .add("required", input.isRequired())
+                  .add("deprecated", input.isDeprecated())
                   .add("label", InputComponents.getLabelFor(input, false));
          addOptional(objBuilder, "description", input.getDescription());
          addOptional(objBuilder, "note", input.getNote());
@@ -169,6 +191,21 @@ public class UICommandHelper
       describeResult(builder, result);
    }
 
+   public void populateControllerAllInputs(JsonObject content, CommandController controller) throws Exception
+   {
+      populateController(content, controller);
+      int stepIndex = content.getInt("stepIndex", 0);
+      if (controller instanceof WizardCommandController)
+      {
+         WizardCommandController wizardController = (WizardCommandController) controller;
+         for (int i = 0; i < stepIndex && wizardController.canMoveToNextStep(); i++)
+         {
+            wizardController.next().initialize();
+            populateController(content, wizardController);
+         }
+      }
+   }
+
    public void populateController(JsonObject content, CommandController controller)
    {
       JsonArray inputArray = content.getJsonArray("inputs");
@@ -176,16 +213,41 @@ public class UICommandHelper
       {
          JsonObject input = inputArray.getJsonObject(i);
          String inputName = input.getString("name");
-         String inputValue = input.getString("value");
-         if (controller.hasInput(inputName))
+         JsonValue valueObj = input.get("value");
+         Object inputValue = null;
+         switch (valueObj.getValueType())
+         {
+         case ARRAY:
+            ArrayList<String> list = new ArrayList<>();
+            for (JsonValue value : (JsonArray) valueObj)
+            {
+               if (value.getValueType() == ValueType.STRING)
+               {
+                  list.add(((JsonString) value).getString());
+               }
+            }
+            inputValue = list;
+            break;
+         case FALSE:
+            inputValue = false;
+            break;
+         case TRUE:
+            inputValue = true;
+            break;
+         case NUMBER:
+            inputValue = ((JsonNumber) valueObj).intValue();
+            break;
+         case STRING:
+            inputValue = ((JsonString) valueObj).getString();
+            break;
+         default:
+            break;
+         }
+         if (controller.hasInput(inputName) && inputValue != null)
             controller.setValueFor(inputName, inputValue);
       }
    }
 
-   /**
-    * @param builder
-    * @param result
-    */
    public void describeResult(JsonObjectBuilder builder, Result result)
    {
       JsonArrayBuilder array = createArrayBuilder();
@@ -200,7 +262,7 @@ public class UICommandHelper
       {
          array.add(_describeResult(createObjectBuilder(), result));
       }
-      builder.add("result", array);
+      builder.add("results", array);
    }
 
    private JsonObjectBuilder _describeResult(JsonObjectBuilder builder, Result result)
