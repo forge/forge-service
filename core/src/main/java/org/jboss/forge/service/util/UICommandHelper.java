@@ -60,7 +60,6 @@ public class UICommandHelper
    {
       describeMetadata(builder, controller);
       describeCurrentState(builder, controller);
-      describeValidation(builder, controller);
       describeInputs(builder, controller);
    }
 

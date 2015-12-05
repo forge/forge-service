@@ -38,7 +38,7 @@ angular.module('jboss-forge')
 
 					// Watch for model changes
 					$scope.$watchCollection('wizardModel', function(model) {
-						if (model == null)
+						if (model == null || $scope.wizardForm.$pristine)
 							return;
 						var payload = createPayload(model);
 						$http.post(
