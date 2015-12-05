@@ -52,7 +52,7 @@ angular.module('jboss-forge')
 
 					// Called when next page button is pressed
 					$scope.nextPage = function(wizard, model, navigationStack) {
-						navigationStack.push(wizard);
+						navigationStack.push(angular.copy(wizard));
 						var payload = createPayload(model);
 						$http.post(
 								'/forge-service/api/forge/command/'
