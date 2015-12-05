@@ -268,7 +268,8 @@ public class UICommandHelper
    private JsonObjectBuilder _describeResult(JsonObjectBuilder builder, Result result)
    {
       builder.add("status", (result instanceof Failed) ? "FAILED" : "SUCCESS");
-      addOptional(builder, "message", result.getMessage());
+      if (result != null)
+         addOptional(builder, "message", result.getMessage());
       return builder;
    }
 

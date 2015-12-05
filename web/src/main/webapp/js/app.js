@@ -24,10 +24,6 @@ angular.module('jboss-forge', [ 'ui.router' ]).run(
 				url : '/',
 				templateUrl : 'views/home.html',
 				controller : 'rootCtrl'
-			}).state('commands', {
-				url : '/commands',
-				templateUrl : 'views/commands.html',
-				controller : 'commandsCtrl'
 			}).state('wizard', {
 				url : '/wizard/{wizardId}',
 				templateUrl : 'views/wizard.html',
