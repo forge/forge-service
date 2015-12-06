@@ -26,26 +26,31 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <!-- Optional theme -->
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="css/forge.css">
+
+<!-- link for CSS when using the tree as an attribute -->
+<link rel="stylesheet" type="text/css"
+	href="js/components/angular-tree-control/css/tree-control-attribute.css">
+
 </head>
 <body ng-controller="rootCtrl">
+<!-- 
+	<header class="navbar navbar-static-top"> </header>
+ -->
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-2" id="commands" ng-controller="commandsCtrl">
-				<ul>
-					<li ng-repeat="c in commands"><a
-						ui-sref="wizard({wizardId: c.id})">{{c.name}}</a></li>
-				</ul>
-			</div>
-			<div class="col-md-10" id="wizard">
+			<div class="col-md-12" id="wizard">
 				<!-- This is where the main content will be placed -->
 				<div ui-view></div>
 			</div>
-
 		</div>
 	</div>
+	<!-- 
 	<footer>
 		<div class="text-center">&copy; JBoss Forge All Rights Reserved.</div>
 	</footer>
+	 -->
 
 
 	<script type="text/javascript" src="js/lib/jquery.2.1.3.min.js"></script>
@@ -57,5 +62,9 @@
 	<script type="text/javascript" src="js/controllers/rootCtrl.js"></script>
 	<script type="text/javascript" src="js/controllers/commandsCtrl.js"></script>
 	<script type="text/javascript" src="js/controllers/wizardCtrl.js"></script>
+	<script type="text/javascript" src="js/controllers/filesystemCtrl.js"></script>
+
+	<script type="text/javascript"
+		src="js/components/angular-tree-control/angular-tree-control.js"></script>
 </body>
 </html>

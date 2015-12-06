@@ -1,5 +1,5 @@
 //Add the necessary routes here
-angular.module('jboss-forge', [ 'ui.router' ]).run(
+angular.module('jboss-forge', [ 'ui.router', 'treeControl']).run(
 		[ '$rootScope', '$state', '$stateParams',
 				function($rootScope, $state, $stateParams) {
 					// It's very handy to add references to $state and

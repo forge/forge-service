@@ -24,7 +24,6 @@ import org.jboss.forge.addon.ui.output.UIOutput;
 
 public class RestUIProvider implements UIProvider
 {
-
    private ByteArrayOutputStream out = new ByteArrayOutputStream();
    private ByteArrayOutputStream err = new ByteArrayOutputStream();
    private final UIOutput output = new RestUIOutput(out, err);

@@ -24,6 +24,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.jboss.forge.service.rest.CommandsResource;
+import org.jboss.forge.service.rest.FilesystemResource;
 
 @ApplicationPath("/api")
 public class ForgeRestApplication extends Application
@@ -31,9 +32,12 @@ public class ForgeRestApplication extends Application
    @Inject
    CommandsResource commandsResource;
 
+   @Inject
+   FilesystemResource filesystemResource;
+
    @Override
    public Set<Object> getSingletons()
    {
-      return new HashSet<>(Arrays.asList(commandsResource));
+      return new HashSet<>(Arrays.asList(commandsResource, filesystemResource));
    }
 }

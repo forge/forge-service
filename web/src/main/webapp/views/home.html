@@ -1,9 +1,31 @@
-<div class="jumbotron">
-	<h1>Forge Service - a RESTful UI</h1>
-	<p>Choose a command in the left column to get started.</p>
-	<p>
-		<a class="btn btn-primary btn-lg"
-			ui-sref="wizard({wizardId: 'project-new'})" role="button">Create
-			a new project</a>
-	</p>
+<div class="container-fluid">
+	<div class="row">
+			<!-- 
+		<div class="jumbotron">
+			<h1>Forge Service - a RESTful UI</h1>
+			<p>Choose a command to get started</p>
+			<p>
+				<a class="btn btn-primary btn-lg"
+					ui-sref="wizard({wizardId: 'project-new'})" role="button">Create
+					a new project</a>
+			</p>
+		</div>
+			 -->
+	</div>
+	<div class="row">
+		<div class="col-md-6" id="filesystem" ng-controller="filesystemCtrl">
+			<h3>Filesystem</h3>
+			<div treecontrol class="tree-classic" tree-model="filesystem"
+				options="treeOptions" on-selection="selectResource(node)"
+				selected-node="node1">{{node.name}}</div>
+			<textarea cols="50" rows="30" ng-model="selectedResourceContents"></textarea>
+		</div>
+		<div class="col-md-6" id="commands" ng-controller="commandsCtrl">
+			<h3>Command</h3>
+			<ul>
+				<li ng-repeat="c in commands"><a
+					ui-sref="wizard({wizardId: c.id})">{{c.name}}</a></li>
+			</ul>
+		</div>
+	</div>
 </div>

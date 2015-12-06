@@ -40,6 +40,7 @@ import org.jboss.forge.addon.ui.result.CompositeResult;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.util.InputComponents;
+import org.jboss.forge.service.ui.RestUIProvider;
 
 /**
  * Describes commands
@@ -188,6 +189,10 @@ public class UICommandHelper
    {
       Result result = controller.execute();
       describeResult(builder, result);
+      // Get out and err
+      RestUIProvider provider = (RestUIProvider) controller.getContext().getProvider();
+      builder.add("out", provider.getOut());
+      builder.add("err", provider.getErr());
    }
 
    public void populateControllerAllInputs(JsonObject content, CommandController controller) throws Exception

@@ -46,7 +46,6 @@ import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
-import org.jboss.forge.furnace.util.OperatingSystemUtils;
 import org.jboss.forge.furnace.versions.Versions;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
@@ -189,8 +188,7 @@ public class CommandsResource
 
    private RestUIContext createUIContext(String resource)
    {
-      // TODO: Change this
-      Resource<File> selection = resourceFactory.create(OperatingSystemUtils.getTempDirectory());
+      Resource<File> selection = resourceFactory.create(new File(resource));
       return new RestUIContext(selection, contextListeners);
    }
 
