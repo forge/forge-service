@@ -33,11 +33,11 @@ public class ForgeRestApplication extends Application
    CommandsResource commandsResource;
 
    @Inject
-   FilesystemResource filesystemResource;
+   FilesystemResource fileSystemResource;
 
    @Override
    public Set<Object> getSingletons()
    {
-      return new HashSet<>(Arrays.asList(commandsResource, filesystemResource));
+      return new HashSet<>(Arrays.asList(commandsResource, fileSystemResource));
    }
 }

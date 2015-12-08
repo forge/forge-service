@@ -11,6 +11,12 @@
    <packaging>war</packaging>
    <dependencies>
       <dependency>
+         <groupId>javax</groupId>
+         <artifactId>javaee-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-service-core</artifactId>
          <version>0.0.1-SNAPSHOT</version>
@@ -19,29 +25,10 @@
    <build>
       <finalName>forge-service</finalName>
       <plugins>
-      <!-- 
-         <plugin>
-            <groupId>org.jboss.forge.furnace</groupId>
-            <artifactId>furnace-maven-plugin</artifactId>
-            <version>${furnace.version}</version>
-            <executions>
-               <execution>
-                  <id>deploy-addons</id>
-                  <phase>test-compile</phase>
-                  <goals>
-                     <goal>addon-install</goal>
-                  </goals>
-                  <inherited>false</inherited>
-                  <configuration>
-                     <addonRepository>${addon.repository}</addonRepository>
-                     <addonIds>
-                        <addonId>org.jboss.forge.addon:core,${jboss.forge.version}</addonId>
-                     </addonIds>
-                  </configuration>
-               </execution>
-            </executions>
-         </plugin>
-       -->
+         <!-- <plugin> <groupId>org.jboss.forge.furnace</groupId> <artifactId>furnace-maven-plugin</artifactId> <version>${furnace.version}</version> 
+            <executions> <execution> <id>deploy-addons</id> <phase>test-compile</phase> <goals> <goal>addon-install</goal> </goals> <inherited>false</inherited> 
+            <configuration> <addonRepository>${addon.repository}</addonRepository> <addonIds> <addonId>org.jboss.forge.addon:core,${jboss.forge.version}</addonId> 
+            </addonIds> </configuration> </execution> </executions> </plugin> -->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
