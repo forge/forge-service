@@ -26,10 +26,12 @@ import org.jboss.forge.addon.convert.Converter;
 import org.jboss.forge.addon.convert.ConverterFactory;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
+import org.jboss.forge.addon.ui.input.HasCompleter;
 import org.jboss.forge.addon.ui.input.InputComponent;
 import org.jboss.forge.addon.ui.input.ManyValued;
 import org.jboss.forge.addon.ui.input.SelectComponent;
 import org.jboss.forge.addon.ui.input.SingleValued;
+import org.jboss.forge.addon.ui.input.UICompleter;
 import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.input.UIInputMany;
 import org.jboss.forge.addon.ui.input.UISelectMany;
@@ -164,6 +166,24 @@ public class UICommandHelper
             SingleValued<?, Object> single = (SingleValued<?, Object>) input;
             addOptional(objBuilder, "value", inputConverter.convert(single.getValue()));
          }
+         if (input instanceof HasCompleter)
+         {
+            HasCompleter<?, Object> hasCompleter = (HasCompleter<?, Object>) input;
+            UICompleter<Object> completer = hasCompleter.getCompleter();
+            if (completer != null)
+            {
+               JsonArrayBuilder typeAheadData = createArrayBuilder();
+               Iterable<Object> valueChoices = completer.getCompletionProposals(controller.getContext(),
+                        (InputComponent<?, Object>) input,
+                        "");
+               for (Object valueChoice : valueChoices)
+               {
+                  typeAheadData.add(inputConverter.convert(valueChoice));
+               }
+               objBuilder.add("typeAheadData", typeAheadData);
+            }
+         }
+
          inputBuilder.add(objBuilder);
       }
       builder.add("inputs", inputBuilder);
