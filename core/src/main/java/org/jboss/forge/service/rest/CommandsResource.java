@@ -18,7 +18,6 @@ package org.jboss.forge.service.rest;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
-import java.io.File;
 import java.util.Collections;
 
 import javax.inject.Inject;
@@ -38,7 +37,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.jboss.forge.addon.resource.Resource;
-import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
 import org.jboss.forge.addon.ui.command.UICommand;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -47,6 +45,7 @@ import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.addon.ui.controller.WizardCommandController;
 import org.jboss.forge.furnace.versions.Versions;
+import org.jboss.forge.service.spi.ResourceProvider;
 import org.jboss.forge.service.ui.RestUIContext;
 import org.jboss.forge.service.ui.RestUIRuntime;
 import org.jboss.forge.service.util.StringUtils;
@@ -62,13 +61,13 @@ public class CommandsResource
    private CommandControllerFactory controllerFactory;
 
    @Inject
-   private ResourceFactory resourceFactory;
-
-   @Inject
    private Iterable<UIContextListener> contextListeners;
 
    @Inject
    private UICommandHelper helper;
+
+   @Inject
+   private ResourceProvider resourceProvider;
 
    @GET
    @Produces(MediaType.APPLICATION_JSON)
@@ -188,7 +187,7 @@ public class CommandsResource
 
    private RestUIContext createUIContext(String resource)
    {
-      Resource<File> selection = resourceFactory.create(new File(resource));
+      Resource<?> selection = resourceProvider.toResource(resource);
       return new RestUIContext(selection, contextListeners);
    }
 
