@@ -275,22 +275,28 @@ public class UICommandHelper
    public void describeResult(JsonObjectBuilder builder, Result result)
    {
       JsonArrayBuilder array = createArrayBuilder();
+      collectResults(array, result);
+      builder.add("results", array);
+   }
+
+   private void collectResults(JsonArrayBuilder results, Result result)
+   {
       if (result instanceof CompositeResult)
       {
          for (Result r : ((CompositeResult) result).getResults())
          {
-            array.add(_describeResult(createObjectBuilder(), r));
+            collectResults(results, r);
          }
       }
       else
       {
-         array.add(_describeResult(createObjectBuilder(), result));
+         results.add(describeSingleResult(result));
       }
-      builder.add("results", array);
    }
 
-   private JsonObjectBuilder _describeResult(JsonObjectBuilder builder, Result result)
+   private JsonObjectBuilder describeSingleResult(Result result)
    {
+      JsonObjectBuilder builder = createObjectBuilder();
       builder.add("status", (result instanceof Failed) ? "FAILED" : "SUCCESS");
       if (result != null)
          addOptional(builder, "message", result.getMessage());

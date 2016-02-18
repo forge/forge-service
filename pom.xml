@@ -4,7 +4,7 @@
    <parent>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-parent</artifactId>
-      <version>19</version>
+      <version>20</version>
    </parent>
    <groupId>org.jboss.forge</groupId>
    <artifactId>forge-service-parent</artifactId>
@@ -12,8 +12,8 @@
    <packaging>pom</packaging>
    <name>Forge Service :: Parent</name>
    <properties>
-      <furnace.version>2.22.9.Final</furnace.version>
-      <forge.version>3.0.0.Alpha3</forge.version>
+      <furnace.version>2.23.2.Final</furnace.version>
+      <forge.version>3.0.0.CR1</forge.version>
       <junit.version>4.12</junit.version>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
@@ -46,4 +46,58 @@
       <module>core</module>
       <module>web</module>
    </modules>
+
+   <scm>
+      <connection>scm:git:git://github.com/forge/forge-service.git</connection>
+      <developerConnection>scm:git:git@github.com:forge/forge-service.git</developerConnection>
+      <url>http://github.com/forge/forge-service</url>
+      <tag>HEAD</tag>
+   </scm>
+
+   <distributionManagement>
+      <snapshotRepository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+      <repository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+   </distributionManagement>
+
+   <build>
+      <pluginManagement>
+         <plugins>
+            <plugin>
+               <groupId>org.jboss.forge.furnace</groupId>
+               <artifactId>furnace-maven-plugin</artifactId>
+               <version>${furnace.version}</version>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <inherited>true</inherited>
+            <configuration>
+               <preparationGoals>clean install</preparationGoals>
+               <releaseProfiles>gpg-sign,jboss-release</releaseProfiles>
+               <tagNameFormat>@{project.version}</tagNameFormat>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.3</version>
+            <extensions>true</extensions>
+            <configuration>
+               <autoReleaseAfterClose>true</autoReleaseAfterClose>
+               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+               <serverId>ossrh</serverId>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
 </project>

@@ -37,7 +37,9 @@ public class FilesystemResource
    @Produces(MediaType.APPLICATION_JSON)
    public FileDTO getFilesystemStructure() throws Exception
    {
-      Path rootPath = Paths.get("/tmp/workspace");
+      // TODO: Move to external configuration
+      Path rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
+               "/tmp"), "workspace");
       final FileDTO[] result = new FileDTO[1];
       final Deque<FileDTO> stack = new LinkedList<>();
       Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>()
