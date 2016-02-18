@@ -13,8 +13,6 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
-      <furnace.version>2.23.2.Final</furnace.version>
-      <forge.version>3.0.0.CR1</forge.version>
       <forge-service.version>1.0.0.Alpha1</forge-service.version>
    </properties>
 
@@ -52,10 +50,11 @@
                      <warName>ROOT</warName>
                   </configuration>
                </plugin>
+               <!-- 
                <plugin>
                   <groupId>org.jboss.forge.furnace</groupId>
                   <artifactId>furnace-maven-plugin</artifactId>
-                  <version>${furnace.version}</version>
+                  <version>2.23.2.Final</version>
                   <executions>
                      <execution>
                         <id>deploy-addons</id>
@@ -73,6 +72,7 @@
                      </execution>
                   </executions>
                </plugin>
+                -->
             </plugins>
          </build>
       </profile>
