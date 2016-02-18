@@ -37,6 +37,8 @@ public class ForgeInitializer
     */
    public void initialize(@Observes @Initialized(ApplicationScoped.class) Object init, FurnaceProducer furnaceProducer)
    {
+      System.setProperty("user.home",
+               System.getenv().getOrDefault("OPENSHIFT_DATA_DIR", System.getProperty("user.home")));
       // TODO: Move to external configuration
       // lets ensure that the addons folder is initialized
       File repoDir = new File(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
