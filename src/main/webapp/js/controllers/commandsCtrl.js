@@ -4,7 +4,7 @@ angular.module('jboss-forge').controller(
 			$scope.$watch('currentResource', function(currentResource) {
 				if (currentResource) {
 					$http.get(
-							'/forge-service/api/forge/commands?resource='
+							'/api/forge/commands?resource='
 									+ currentResource).success(function(data) {
 						$scope.commands = data;
 					});

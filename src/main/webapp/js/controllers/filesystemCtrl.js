@@ -22,14 +22,14 @@ angular.module('jboss-forge').controller(
 			}
 			$scope.selectResource = function(node) {
 				$http.get(
-						'/forge-service/api/filesystem/contents?resource='
+						'/api/filesystem/contents?resource='
 								+ node.path).success(function(data) {
 					$scope.selectedResourceContents = data;
 				})
 
 				$scope.$emit('resourceChanged', node);
 			}
-			$http.get('/forge-service/api/filesystem').success(function(data) {
+			$http.get('/api/filesystem').success(function(data) {
 				$scope.filesystem = [ data ];
 			})
 		});
