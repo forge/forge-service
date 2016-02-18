@@ -1,0 +1,74 @@
+<div class="container">
+	<div class="result">
+		<div ng-repeat="result in wizard.results" class="alert" role="alert"
+			ng-show="result.message"
+			ng-class="{'alert-success': result.status == 'SUCCESS', 'alert-danger': result.status == 'FAILED'}">
+			{{result.message}}
+			</p>
+		</div>
+	</div>
+	<h1>{{wizard.metadata.name}}</h1>
+	<form name="wizardForm" class="form-horizontal" role="form">
+		<fieldset>
+			<legend>{{wizard.metadata.description}}</legend>
+			<div class="messages">
+				<div ng-repeat="message in wizard.messages" class="alert"
+					role="alert"
+					ng-class="{'alert-info': message.severity == 'INFO', 'alert-danger': message.severity == 'ERROR', 'alert-warning': message.severity == 'WARNING'}">
+					{{message.description}}
+					</p>
+				</div>
+				<div class="form-group has-success has-feedback"
+					ng-repeat="input in wizard.inputs">
+					<div ng-switch on="input.class">
+						<div ng-switch-when="UISelectOne">
+							<label>{{input.label}}</label> <select class="form-control"
+								title="{{input.description}}" ng-model="wizardModel[input.name]"
+								ng-options="option for option in input.valueChoices track by option">
+							</select> <small>{{input.note}}</small>
+						</div>
+						<div ng-switch-when="UISelectMany">
+							<label>{{input.label}}</label> <select class="form-control"
+								size="10" title="{{input.description}}"
+								ng-model="wizardModel[input.name]" multiple
+								ng-options="option for option in input.valueChoices track by option">
+							</select> <small>{{input.note}}</small>
+						</div>
+						<div ng-switch-when="UIInputMany"></div>
+						<div ng-switch-when="UIInput">
+							<div ng-switch on="input.valueType">
+								<div ng-switch-when="java.lang.Boolean">
+									<label><input type="checkbox"
+										ng-model="wizardModel[input.name]"> {{input.label}}</label> <small>{{input.note}}</small>
+								</div>
+								<div ng-switch-default>
+									<!-- code to render the regular input -->
+									<label>{{input.label}}</label> <input type="text"
+										class="form-control" ng-model="wizardModel[input.name]"
+										title="{{input.description}}"> <small>{{input.note}}</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="btn-group pull-right">
+					<button type="submit" class="btn btn-default"
+						ng-disabled="!wizard.state.canMoveToPreviousStep"
+						ng-click="previousPage(wizard, wizardModel, navigationStack)">«
+						Back</button>
+					<button type="submit" class="btn btn-default"
+						ng-disabled="!wizard.state.canMoveToNextStep"
+						ng-click="nextPage(wizard, wizardModel, navigationStack)">Next
+						»</button>
+					<button type="submit" class="btn btn-default" ng-click="cancel()">Cancel</button>
+					<button type="submit" class="btn btn-primary active"
+						ng-disabled="!wizard.state.canExecute"
+						ng-click="finish(wizardModel)">Finish</button>
+				</div>
+		</fieldset>
+	</form>
+</div>
+<h3>Standard Output</h3>
+<code>{{wizard.out}}</code>
+<h3>Error Output</h3>
+<code>{{wizard.err}}</code>
