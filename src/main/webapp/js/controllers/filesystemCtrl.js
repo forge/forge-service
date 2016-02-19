@@ -1,6 +1,6 @@
 angular.module('jboss-forge').controller(
 		'filesystemCtrl',
-		function($scope, $http) {
+		function($scope, $http, config) {
 			// https://github.com/wix/angular-tree-control
 			$scope.treeOptions = {
 				nodeChildren : "children",
@@ -22,14 +22,14 @@ angular.module('jboss-forge').controller(
 			}
 			$scope.selectResource = function(node) {
 				$http.get(
-						'/api/filesystem/contents?resource='
+						config.contextPath + '/api/filesystem/contents?resource='
 								+ node.path).success(function(data) {
 					$scope.selectedResourceContents = data;
 				})
 
 				$scope.$emit('resourceChanged', node);
 			}
-			$http.get('/api/filesystem').success(function(data) {
+			$http.get(config.contextPath + '/api/filesystem').success(function(data) {
 				$scope.filesystem = [ data ];
 			})
 		});

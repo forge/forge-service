@@ -1,7 +1,7 @@
 angular.module('jboss-forge')
 		.controller(
 				'wizardCtrl',
-				function($scope, $rootScope, $state, $stateParams, $http) {
+				function($scope, $rootScope, $state, $stateParams, $http, config) {
 					var createPayload = function(model) {
 						var inputs = [];
 						for (att in model) {
@@ -29,7 +29,7 @@ angular.module('jboss-forge')
 
 					// Fetch the command info
 					$http.get(
-							'/api/forge/command/'
+							config.contextPath + '/api/forge/command/'
 									+ $stateParams.wizardId + "?resource="
 									+ $scope.currentResource).success(
 							function(data) {
@@ -43,7 +43,7 @@ angular.module('jboss-forge')
 							return;
 						var payload = createPayload(model);
 						$http.post(
-								'/api/forge/command/'
+								config.contextPath + '/api/forge/command/'
 										+ $stateParams.wizardId + '/validate',
 								payload).success(function(data) {
 							$scope.wizard.state = data.state;
@@ -56,7 +56,7 @@ angular.module('jboss-forge')
 						navigationStack.push(angular.copy(wizard));
 						var payload = createPayload(model);
 						$http.post(
-								'/api/forge/command/'
+								config.contextPath + '/api/forge/command/'
 										+ $stateParams.wizardId + '/next',
 								payload).success(function(data) {
 							$scope.wizard.state = data.state;
@@ -86,7 +86,7 @@ angular.module('jboss-forge')
 					$scope.finish = function(model) {
 						var payload = createPayload(model);
 						$http.post(
-								'/api/forge/command/'
+								config.contextPath + '/api/forge/command/'
 										+ $stateParams.wizardId + '/execute',
 								payload).success(function(data) {
 							$scope.wizard.results = data.results;

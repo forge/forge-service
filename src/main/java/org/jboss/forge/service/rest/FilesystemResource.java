@@ -40,6 +40,10 @@ public class FilesystemResource
       // TODO: Move to external configuration
       Path rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
                "/tmp"), "workspace");
+      if (!Files.exists(rootPath))
+      {
+         Files.createDirectory(rootPath);
+      }
       final FileDTO[] result = new FileDTO[1];
       final Deque<FileDTO> stack = new LinkedList<>();
       Files.walkFileTree(rootPath, new SimpleFileVisitor<Path>()
@@ -77,7 +81,7 @@ public class FilesystemResource
    @GET
    @javax.ws.rs.Path("/contents")
    @Produces(MediaType.TEXT_PLAIN)
-   public String getContents(@QueryParam("resource") String fileName) throws Exception
+   public String contents(@QueryParam("resource") String fileName) throws Exception
    {
       Path path = Paths.get(fileName);
       if (Files.isRegularFile(path))
