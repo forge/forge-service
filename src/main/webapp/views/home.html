@@ -9,10 +9,12 @@
 		</div>
 		<div class="col-md-9" id="commands" ng-controller="commandsCtrl">
 			<h3>Command</h3>
+			<input type="search" class="form-control"
+				placeholder="Search for available commands..." ng-model="searchBox">
+			<hr role="separator" class="divider"/>
 			<ul id="command-list" class="nav nav-pills nav-stacked list-group">
-				<li ng-repeat="c in commands" class="list-group-item" >
-					<a ui-sref="wizard({wizardId: c.id})">{{c.name}}</a>
-				</li>
+				<li ng-repeat="c in commands|filter:searchBox" class="list-group-item"><a
+					ui-sref="wizard({wizardId: c.id})">{{c.name}}</a></li>
 			</ul>
 		</div>
 	</div>
