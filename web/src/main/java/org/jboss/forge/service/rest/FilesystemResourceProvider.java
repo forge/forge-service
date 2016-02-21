@@ -7,12 +7,13 @@
 
 package org.jboss.forge.service.rest;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.resource.Resource;
 import org.jboss.forge.addon.resource.ResourceFactory;
+import org.jboss.forge.service.main.ForgeInitializer;
 import org.jboss.forge.service.spi.ResourceProvider;
 
 /**
@@ -28,7 +29,8 @@ public class FilesystemResourceProvider implements ResourceProvider
    @Override
    public Resource<?> toResource(String path)
    {
-      return resourceFactory.create(new File(path));
+      Path rootPath = ForgeInitializer.getRoot();
+      return resourceFactory.create(rootPath.resolve(path).toFile());
    }
 
 }

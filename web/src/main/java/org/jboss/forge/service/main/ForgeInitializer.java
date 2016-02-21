@@ -16,6 +16,10 @@
 package org.jboss.forge.service.main;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -37,6 +41,8 @@ public class ForgeInitializer
     */
    public void initialize(@Observes @Initialized(ApplicationScoped.class) Object init, FurnaceProducer furnaceProducer)
    {
+      System.setProperty("user.home",
+               System.getenv().getOrDefault("OPENSHIFT_DATA_DIR", System.getProperty("user.home")));
       // TODO: Move to external configuration
       // lets ensure that the addons folder is initialized
       File repoDir = new File(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
@@ -52,6 +58,29 @@ public class ForgeInitializer
          LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
       }
       furnaceProducer.setup(repoDir);
+   }
+
+   private static Path rootPath;
+
+   public static Path getRoot()
+   {
+      if (rootPath == null)
+      {
+         rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_TMP_DIR",
+                  "/tmp"), "workspace");
+         if (!Files.exists(rootPath))
+         {
+            try
+            {
+               Files.createDirectory(rootPath);
+            }
+            catch (IOException e)
+            {
+               e.printStackTrace();
+            }
+         }
+      }
+      return rootPath;
    }
 
    public void destroy(@Observes @Destroyed(ApplicationScoped.class) Object init, FurnaceProducer furnaceProducer)
