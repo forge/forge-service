@@ -1,0 +1,23 @@
+div.header, header {
+	background: #222243 none repeat scroll 0 0;
+	color: white;
+	height: auto;
+	min-height: 80px !important;
+	padding: 0;
+}
+
+a.forge-main-logo {
+	background: rgba(0, 0, 0, 0) url("../images/forge_logo_215x60.png")
+		no-repeat scroll 0 0/cover;
+	display: block;
+	height: 60px;
+	width: 215px;
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+footer, div.footer {
+	background: #24242d none repeat scroll 0 0;
+	color: white;
+	padding: 2em 0;
+}
