@@ -29,7 +29,7 @@ public class FilesystemResourceProvider implements ResourceProvider
    static
    {
       // TODO: Move to external configuration
-      rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
+      rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_TMP_DIR",
                "/tmp"), "workspace");
       if (!Files.exists(rootPath))
       {
