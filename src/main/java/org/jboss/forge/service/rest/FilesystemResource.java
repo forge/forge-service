@@ -170,7 +170,7 @@ public class FilesystemResource
                final Path parent = dest.getParent();
                if (Files.notExists(parent))
                {
-                  System.out.printf("Creating directory %s\n", parent);
+                  // System.out.printf("Creating directory %s\n", parent);
                   Files.createDirectories(parent);
                }
                Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
@@ -198,7 +198,7 @@ public class FilesystemResource
                               rootPath.relativize(dir).toString());
                      if (Files.notExists(dirToCreate))
                      {
-                        System.out.printf("Creating directory %s\n", dirToCreate);
+                        // System.out.printf("Creating directory %s\n", dirToCreate);
                         Files.createDirectories(dirToCreate);
                      }
                      return FileVisitResult.CONTINUE;
