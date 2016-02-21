@@ -5,6 +5,7 @@
 			<div treecontrol class="tree-classic" tree-model="filesystem"
 				options="treeOptions" on-selection="selectResource(node)"
 				selected-node="node1">{{node.name}}</div>
+			<a href="{{downloadZipUrl(currentResource)}}" target="_new" ng-if="currentResource">Download as ZIP</a>
 			<textarea cols="50" rows="30" ng-model="selectedResourceContents"></textarea>
 		</div>
 		<div class="col-md-9" id="commands" ng-controller="commandsCtrl">

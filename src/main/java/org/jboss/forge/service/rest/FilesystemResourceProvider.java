@@ -7,7 +7,10 @@
 
 package org.jboss.forge.service.rest;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.inject.Inject;
 
@@ -21,6 +24,25 @@ import org.jboss.forge.service.spi.ResourceProvider;
  */
 public class FilesystemResourceProvider implements ResourceProvider
 {
+   private static Path rootPath;
+
+   static
+   {
+      // TODO: Move to external configuration
+      rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
+               "/tmp"), "workspace");
+      if (!Files.exists(rootPath))
+      {
+         try
+         {
+            Files.createDirectory(rootPath);
+         }
+         catch (IOException e)
+         {
+            e.printStackTrace();
+         }
+      }
+   }
 
    @Inject
    private ResourceFactory resourceFactory;
@@ -28,7 +50,7 @@ public class FilesystemResourceProvider implements ResourceProvider
    @Override
    public Resource<?> toResource(String path)
    {
-      return resourceFactory.create(new File(path));
+      return resourceFactory.create(rootPath.resolve(path).toFile());
    }
 
 }
