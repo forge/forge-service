@@ -14,7 +14,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,6 +31,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.forge.service.main.ForgeInitializer;
 import org.jboss.forge.service.rest.dto.FileDTO;
 
 /**
@@ -43,26 +42,7 @@ import org.jboss.forge.service.rest.dto.FileDTO;
 @ApplicationScoped
 public class FilesystemResource
 {
-   private Path rootPath;
-
-   @PostConstruct
-   public void init()
-   {
-      // TODO: Move to external configuration
-      rootPath = Paths.get(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
-               "/tmp"), "workspace");
-      if (!Files.exists(rootPath))
-      {
-         try
-         {
-            Files.createDirectory(rootPath);
-         }
-         catch (IOException e)
-         {
-            e.printStackTrace();
-         }
-      }
-   }
+   private Path rootPath = ForgeInitializer.getRoot();
 
    @GET
    @Consumes(MediaType.APPLICATION_JSON)
