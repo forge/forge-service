@@ -41,6 +41,11 @@
 									<label><input type="checkbox"
 										ng-model="wizardModel[input.name]"> {{input.label}}</label> <small>{{input.note}}</small>
 								</div>
+								<div ng-switch-when="java.lang.Integer">
+									<label>{{input.label}}</label> <input type="number"
+										class="form-control" ng-model="wizardModel[input.name]"
+										title="{{input.description}}"> <small>{{input.note}}</small>
+								</div>
 								<div ng-switch-default>
 									<!-- code to render the regular input -->
 									<label>{{input.label}}</label> <input type="text"
