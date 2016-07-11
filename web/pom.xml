@@ -8,6 +8,21 @@
    <artifactId>forge-service-web</artifactId>
    <name>Forge Service :: Web</name>
    <packaging>war</packaging>
+
+
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>bom</artifactId>
+      <version>1.0.0.Final</version>
+      <scope>import</scope>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+
    <dependencies>
       <dependency>
          <groupId>javax</groupId>
@@ -31,6 +46,22 @@
                <failOnMissingWebXml>false</failOnMissingWebXml>
             </configuration>
          </plugin>
+
+
+<plugin>
+  <groupId>org.wildfly.swarm</groupId>
+  <artifactId>wildfly-swarm-plugin</artifactId>
+  <version>1.0.0.Final</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>package</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+
+
       </plugins>
    </build>
    <profiles>
