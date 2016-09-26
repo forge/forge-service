@@ -43,7 +43,7 @@
 								</div>
 								<div ng-switch-when="java.lang.Integer">
 									<label>{{input.label}}</label> <input type="number"
-										class="form-control" ng-model="wizardModel[input.name]"
+										class="form-control" string-to-number ng-model="wizardModel[input.name]"
 										title="{{input.description}}"> <small>{{input.note}}</small>
 								</div>
 								<div ng-switch-default>
