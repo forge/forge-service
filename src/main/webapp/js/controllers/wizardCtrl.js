@@ -71,7 +71,6 @@ angular.module('jboss-forge')
 					$scope.previousPage = function(wizard, wizardModel,
 							navigationStack) {
 						var previousWizardPage = navigationStack.pop();
-						console.log(previousWizardPage);
 						$scope.wizard = previousWizardPage;
 					}
 
