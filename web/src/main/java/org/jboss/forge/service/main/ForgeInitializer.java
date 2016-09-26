@@ -46,7 +46,7 @@ public class ForgeInitializer
       // TODO: Move to external configuration
       // lets ensure that the addons folder is initialized
       File repoDir = new File(System.getenv().getOrDefault("OPENSHIFT_DATA_DIR",
-               "/home/ggastald/workspace/forge-core/dist/target/forge-distribution-3.2.3-SNAPSHOT/"), "addons");
+               "/home/ggastald/workspace/forge-core/dist/target/forge-distribution-3.3.2-SNAPSHOT/"), "addons");
       LOG.info("initializing furnace with folder: " + repoDir.getAbsolutePath());
       File[] files = repoDir.listFiles();
       if (files == null || files.length == 0)

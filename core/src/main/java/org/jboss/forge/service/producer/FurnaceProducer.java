@@ -29,6 +29,7 @@ import org.jboss.forge.furnace.Furnace;
 import org.jboss.forge.furnace.addons.Addon;
 import org.jboss.forge.furnace.proxy.ClassLoaderAdapterBuilder;
 import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
+import org.jboss.forge.furnace.util.AddonCompatibilityStrategies;
 import org.jboss.forge.furnace.util.Sets;
 
 /**
@@ -46,6 +47,7 @@ public class FurnaceProducer
       // Initialize Furnace
       ClassLoader ccl = Thread.currentThread().getContextClassLoader();
       furnace = create(ccl, ccl);
+      furnace.setAddonCompatibilityStrategy(AddonCompatibilityStrategies.LENIENT);
       furnace.addRepository(AddonRepositoryMode.IMMUTABLE, repoDir);
       Future<Furnace> future = furnace.startAsync();
       try

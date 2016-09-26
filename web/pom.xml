@@ -11,7 +11,7 @@
    <packaging>war</packaging>
    
    <properties>
-      <version.swarm>1.0.0.Final</version.swarm>
+      <version.swarm>2016.9</version.swarm>
    </properties>
 
    <dependencyManagement>
