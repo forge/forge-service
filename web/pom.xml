@@ -10,7 +10,7 @@
    <packaging>war</packaging>
    
    <properties>
-      <version.swarm>2016.9</version.swarm>
+      <version.swarm>2016.11.0</version.swarm>
    </properties>
 
    <dependencyManagement>
