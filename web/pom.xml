@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>org.jboss.forge</groupId>
@@ -8,9 +9,10 @@
    <artifactId>forge-service-web</artifactId>
    <name>Forge Service :: Web</name>
    <packaging>war</packaging>
-   
+
    <properties>
       <version.swarm>2016.11.0</version.swarm>
+      <failOnMissingWebXml>false</failOnMissingWebXml>
    </properties>
 
    <dependencyManagement>
@@ -33,20 +35,22 @@
       </dependency>
       <dependency>
          <groupId>org.jboss.forge</groupId>
-         <artifactId>forge-service-core</artifactId>
+         <artifactId>forge-service-rest</artifactId>
          <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      <!-- WildFly Swarm Fractions -->
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>cdi</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>jaxrs-jsonp</artifactId>
       </dependency>
    </dependencies>
    <build>
       <finalName>forge-service</finalName>
       <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-               <failOnMissingWebXml>false</failOnMissingWebXml>
-            </configuration>
-         </plugin>
          <plugin>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>wildfly-swarm-plugin</artifactId>

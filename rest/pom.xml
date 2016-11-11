@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.jboss.forge</groupId>
+      <artifactId>forge-service-parent</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+   <artifactId>forge-service-rest</artifactId>
+   <name>Forge :: Service REST</name>
+   <dependencies>
+
+      <dependency>
+         <groupId>javax</groupId>
+         <artifactId>javaee-api</artifactId>
+         <scope>provided</scope>
+      </dependency>
+
+      <!-- Forge APIs -->
+      <dependency>
+         <groupId>org.jboss.forge</groupId>
+         <artifactId>forge-service-core</artifactId>
+         <version>1.0.0-SNAPSHOT</version>
+      </dependency>
+      <!-- Test dependencies -->
+      <dependency>
+         <groupId>com.jayway.restassured</groupId>
+         <artifactId>rest-assured</artifactId>
+         <version>2.7.0</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+</project>
