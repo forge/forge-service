@@ -239,33 +239,36 @@ public class UICommandHelper
          String inputName = input.getString("name");
          JsonValue valueObj = input.get("value");
          Object inputValue = null;
-         switch (valueObj.getValueType())
+         if (valueObj != null)
          {
-         case ARRAY:
-            ArrayList<String> list = new ArrayList<>();
+            switch (valueObj.getValueType())
+            {
+               case ARRAY:
+                  ArrayList<String> list = new ArrayList<>();
             for (JsonValue value : (JsonArray) valueObj)
             {
                if (value.getValueType() == ValueType.STRING)
                {
-                  list.add(((JsonString) value).getString());
-               }
+                        list.add(((JsonString) value).getString());
+                     }
+                  }
+                  inputValue = list;
+                  break;
+               case FALSE:
+                  inputValue = false;
+                  break;
+               case TRUE:
+                  inputValue = true;
+                  break;
+               case NUMBER:
+                  inputValue = ((JsonNumber) valueObj).intValue();
+                  break;
+               case STRING:
+                  inputValue = ((JsonString) valueObj).getString();
+                  break;
+               default:
+                  break;
             }
-            inputValue = list;
-            break;
-         case FALSE:
-            inputValue = false;
-            break;
-         case TRUE:
-            inputValue = true;
-            break;
-         case NUMBER:
-            inputValue = ((JsonNumber) valueObj).intValue();
-            break;
-         case STRING:
-            inputValue = ((JsonString) valueObj).getString();
-            break;
-         default:
-            break;
          }
          if (controller.hasInput(inputName) && inputValue != null)
             controller.setValueFor(inputName, inputValue);
