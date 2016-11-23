@@ -164,7 +164,13 @@ public class UICommandHelper
          else
          {
             SingleValued<?, Object> single = (SingleValued<?, Object>) input;
-            addOptional(objBuilder, "value", inputConverter.convert(single.getValue()));
+
+            Object value = single.getValue();
+            if (value != null && !(value instanceof Number) && !(value instanceof Boolean))
+            {
+               value = inputConverter.convert(value);
+            }
+            addOptional(objBuilder, "value", value);
          }
          if (input instanceof HasCompleter)
          {
@@ -243,31 +249,31 @@ public class UICommandHelper
          {
             switch (valueObj.getValueType())
             {
-               case ARRAY:
-                  ArrayList<String> list = new ArrayList<>();
-            for (JsonValue value : (JsonArray) valueObj)
-            {
-               if (value.getValueType() == ValueType.STRING)
+            case ARRAY:
+               ArrayList<String> list = new ArrayList<>();
+               for (JsonValue value : (JsonArray) valueObj)
                {
-                        list.add(((JsonString) value).getString());
-                     }
+                  if (value.getValueType() == ValueType.STRING)
+                  {
+                     list.add(((JsonString) value).getString());
                   }
-                  inputValue = list;
-                  break;
-               case FALSE:
-                  inputValue = false;
-                  break;
-               case TRUE:
-                  inputValue = true;
-                  break;
-               case NUMBER:
-                  inputValue = ((JsonNumber) valueObj).intValue();
-                  break;
-               case STRING:
-                  inputValue = ((JsonString) valueObj).getString();
-                  break;
-               default:
-                  break;
+               }
+               inputValue = list;
+               break;
+            case FALSE:
+               inputValue = false;
+               break;
+            case TRUE:
+               inputValue = true;
+               break;
+            case NUMBER:
+               inputValue = ((JsonNumber) valueObj).intValue();
+               break;
+            case STRING:
+               inputValue = ((JsonString) valueObj).getString();
+               break;
+            default:
+               break;
             }
          }
          if (controller.hasInput(inputName) && inputValue != null)
@@ -310,7 +316,18 @@ public class UICommandHelper
    {
       if (value != null)
       {
-         builder.add(name, value.toString());
+         if (value instanceof Boolean)
+         {
+            builder.add(name, (Boolean) value);
+         }
+         else if (value instanceof Number)
+         {
+            builder.add(name, ((Number) value).intValue());
+         }
+         else
+         {
+            builder.add(name, value.toString());
+         }
       }
    }
 
