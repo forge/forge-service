@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>org.jboss.forge</groupId>
@@ -46,6 +47,10 @@
          <groupId>org.wildfly.swarm</groupId>
          <artifactId>jaxrs-jsonp</artifactId>
       </dependency>
+      <dependency>
+         <groupId>org.wildfly.swarm</groupId>
+         <artifactId>jaxrs-cdi</artifactId>
+      </dependency>
    </dependencies>
    <build>
       <finalName>forge-service</finalName>
@@ -63,7 +68,29 @@
             <configuration>
                <skip>true</skip>
             </configuration>
-         </plugin>         
+         </plugin>
+         <plugin>
+            <groupId>org.jboss.forge.furnace</groupId>
+            <artifactId>furnace-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>deploy-addons</id>
+                  <phase>test-compile</phase>
+                  <goals>
+                     <goal>addon-install</goal>
+                  </goals>
+                  <inherited>false</inherited>
+                  <configuration>
+                     <addonRepository>${project.build.directory}/${project.build.finalName}/WEB-INF/addons</addonRepository>
+                     <addonIds>
+                        <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
+                        <!-- <addonId>org.jboss.forge.addon:obsidian-generator,1.0.0-SNAPSHOT</addonId> -->
+                     </addonIds>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
          <plugin>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>wildfly-swarm-plugin</artifactId>
@@ -77,6 +104,36 @@
             </executions>
          </plugin>
       </plugins>
+      <pluginManagement>
+         <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven 
+               build itself. -->
+            <plugin>
+               <groupId>org.eclipse.m2e</groupId>
+               <artifactId>lifecycle-mapping</artifactId>
+               <version>1.0.0</version>
+               <configuration>
+                  <lifecycleMappingMetadata>
+                     <pluginExecutions>
+                        <pluginExecution>
+                           <pluginExecutionFilter>
+                              <groupId>org.jboss.forge.furnace</groupId>
+                              <artifactId>furnace-maven-plugin</artifactId>
+                              <versionRange>[2.24.3.Final,)</versionRange>
+                              <goals>
+                                 <goal>addon-install</goal>
+                              </goals>
+                           </pluginExecutionFilter>
+                           <action>
+                              <ignore></ignore>
+                           </action>
+                        </pluginExecution>
+                     </pluginExecutions>
+                  </lifecycleMappingMetadata>
+               </configuration>
+            </plugin>
+         </plugins>
+      </pluginManagement>
    </build>
    <profiles>
       <profile>
@@ -90,26 +147,6 @@
                      <outputDirectory>deployments</outputDirectory>
                      <warName>ROOT</warName>
                   </configuration>
-               </plugin>
-               <plugin>
-                  <groupId>org.jboss.forge.furnace</groupId>
-                  <artifactId>furnace-maven-plugin</artifactId>
-                  <executions>
-                     <execution>
-                        <id>deploy-addons</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                           <goal>addon-install</goal>
-                        </goals>
-                        <inherited>false</inherited>
-                        <configuration>
-                           <addonRepository>${OPENSHIFT_DATA_DIR}/addons</addonRepository>
-                           <addonIds>
-                              <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-                           </addonIds>
-                        </configuration>
-                     </execution>
-                  </executions>
                </plugin>
             </plugins>
          </build>
