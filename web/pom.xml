@@ -86,11 +86,11 @@
                         <addonId>org.jboss.forge.furnace.container:cdi,${furnace.version}</addonId>
                         <addonId>org.jboss.forge.furnace.container:simple,${furnace.version}</addonId>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-<!--
+
                         <addonId>io.fabric8.forge:camel,2.3.79</addonId>
                         <addonId>io.fabric8.forge:devops,2.3.79</addonId>
                         <addonId>io.fabric8.forge:funktion,2.3.79</addonId>
--->
+
                      </addonIds>
                   </configuration>
                </execution>

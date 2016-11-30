@@ -42,6 +42,7 @@ import org.jboss.forge.addon.ui.result.CompositeResult;
 import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.util.InputComponents;
+import org.jboss.forge.furnace.proxy.Proxies;
 import org.jboss.forge.service.ui.RestUIProvider;
 
 /**
@@ -123,7 +124,7 @@ public class UICommandHelper
             JsonArrayBuilder valueChoices = createArrayBuilder();
             for (Object valueChoice : selectComponent.getValueChoices())
             {
-               valueChoices.add(inputConverter.convert(valueChoice));
+               valueChoices.add(inputConverter.convert(Proxies.unwrap(valueChoice)));
             }
             objBuilder.add("valueChoices", valueChoices);
             if (input instanceof UISelectMany)
@@ -157,7 +158,7 @@ public class UICommandHelper
             JsonArrayBuilder manyValues = createArrayBuilder();
             for (Object item : many.getValue())
             {
-               manyValues.add(inputConverter.convert(item));
+               manyValues.add(inputConverter.convert(Proxies.unwrap(item)));
             }
             objBuilder.add("value", manyValues);
          }
@@ -168,7 +169,7 @@ public class UICommandHelper
             Object value = single.getValue();
             if (value != null && !(value instanceof Number) && !(value instanceof Boolean))
             {
-               value = inputConverter.convert(value);
+               value = inputConverter.convert(Proxies.unwrap(value));
             }
             addOptional(objBuilder, "value", value);
          }
@@ -184,7 +185,7 @@ public class UICommandHelper
                         "");
                for (Object valueChoice : valueChoices)
                {
-                  typeAheadData.add(inputConverter.convert(valueChoice));
+                  typeAheadData.add(inputConverter.convert(Proxies.unwrap(valueChoice)));
                }
                objBuilder.add("typeAheadData", typeAheadData);
             }
