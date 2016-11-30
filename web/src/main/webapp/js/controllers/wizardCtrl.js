@@ -47,6 +47,7 @@ angular.module('jboss-forge')
 										+ $stateParams.wizardId + '/validate',
 								payload).success(function(data) {
 							$scope.wizard.state = data.state;
+							angular.merge($scope.wizard.inputs,data.inputs);
 							$scope.wizard.messages = data.messages;
 						})
 					});
