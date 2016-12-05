@@ -3,4 +3,11 @@ forge-service
 
 image:https://travis-ci.org/forge/forge-service.svg?branch=master["Build Status", link="https://travis-ci.org/forge/forge-service"]
 
-Running Forge from a RESTFul application
+Run JBoss Forge as a RESTFul application
+
+How to run
+----------
+
+- Run `mvn clean install` to build the whole project
+- Run `java -jar web/target/forge-service-swarm.jar`
+- Open http://localhost:8080
