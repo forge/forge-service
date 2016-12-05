@@ -10,6 +10,11 @@ package org.jboss.forge.service.util;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -124,7 +129,9 @@ public class UICommandHelper
             JsonArrayBuilder valueChoices = createArrayBuilder();
             for (Object valueChoice : selectComponent.getValueChoices())
             {
-               valueChoices.add(inputConverter.convert(Proxies.unwrap(valueChoice)));
+               Object itemUnwrapped = Proxies.unwrap(valueChoice);
+               String label = inputConverter.convert(itemUnwrapped);
+               valueChoices.add(describeValueChoice(label, itemUnwrapped));
             }
             objBuilder.add("valueChoices", valueChoices);
             if (input instanceof UISelectMany)
@@ -289,7 +296,7 @@ public class UICommandHelper
       builder.add("results", array);
    }
 
-   private void collectResults(JsonArrayBuilder results, Result result)
+   protected void collectResults(JsonArrayBuilder results, Result result)
    {
       if (result instanceof CompositeResult)
       {
@@ -304,7 +311,48 @@ public class UICommandHelper
       }
    }
 
-   private JsonObjectBuilder describeSingleResult(Result result)
+   protected JsonObjectBuilder describeValueChoice(String label, Object obj)
+   {
+      JsonObjectBuilder builder = createObjectBuilder();
+      builder.add("id", label);
+      if (!(obj instanceof String) && !(obj instanceof Number) && !(obj instanceof Boolean))
+      {
+         try
+         {
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors())
+            {
+               // Ignore class attribute from Object.class
+               String name = pd.getName();
+               if ("class".equals(name))
+               {
+                  continue;
+               }
+               Method readMethod = pd.getReadMethod();
+               if (readMethod != null)
+               {
+                  try
+                  {
+                     addOptional(builder, name, readMethod.invoke(obj));
+                  }
+                  catch (Exception e)
+                  {
+                     // Ignore
+                     // e.printStackTrace();
+                  }
+               }
+            }
+         }
+         catch (IntrospectionException ie)
+         {
+            // ignore
+            // ie.printStackTrace();
+         }
+      }
+      return builder;
+   }
+
+   protected JsonObjectBuilder describeSingleResult(Result result)
    {
       JsonObjectBuilder builder = createObjectBuilder();
       builder.add("status", (result instanceof Failed) ? "FAILED" : "SUCCESS");
@@ -313,7 +361,7 @@ public class UICommandHelper
       return builder;
    }
 
-   private void addOptional(JsonObjectBuilder builder, String name, Object value)
+   protected void addOptional(JsonObjectBuilder builder, String name, Object value)
    {
       if (value != null)
       {

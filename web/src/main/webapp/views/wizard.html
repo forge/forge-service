@@ -24,14 +24,14 @@
 						<div ng-switch-when="UISelectOne">
 							<label>{{input.label}}</label> <select class="form-control"
 								title="{{input.description}}" ng-model="wizardModel[input.name]"
-								ng-options="option for option in input.valueChoices track by option">
+								ng-options="item.id as item.id for item in input.valueChoices">
 							</select> <small>{{input.note}}</small>
 						</div>
 						<div ng-switch-when="UISelectMany">
 							<label>{{input.label}}</label> <select class="form-control"
 								size="10" title="{{input.description}}"
 								ng-model="wizardModel[input.name]" multiple
-								ng-options="option for option in input.valueChoices track by option">
+								ng-options="item.id as item.id for item in input.valueChoices">
 							</select> <small>{{input.note}}</small>
 						</div>
 						<div ng-switch-when="UIInputMany"></div>
