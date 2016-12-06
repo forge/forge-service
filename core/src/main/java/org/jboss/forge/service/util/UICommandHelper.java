@@ -322,9 +322,9 @@ public class UICommandHelper
             BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
             for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors())
             {
-               // Ignore class attribute from Object.class
+               // Ignore class attribute from Object.class and do not override id
                String name = pd.getName();
-               if ("class".equals(name))
+               if ("id".equals(name) || "class".equals(name))
                {
                   continue;
                }
