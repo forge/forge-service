@@ -8,6 +8,13 @@ image:https://maven-badges.herokuapp.com/maven-central/org.jboss.forge/forge-ser
 
 Run JBoss Forge as a RESTFul application
 
+Modules
+-------
+
+- *core* : Classes needed to bootstrap Forge in a Java EE environment (depends on CDI and the Forge core APIs)
+- *rest*:  REST endpoints exposing UICommands
+- *web* : Sample web application consuming the REST endpoints
+
 How to run
 ----------
 
