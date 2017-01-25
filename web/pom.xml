@@ -10,7 +10,7 @@
    <packaging>war</packaging>
 
    <properties>
-      <version.swarm>2016.12.0</version.swarm>
+      <version.swarm>2017.1.1</version.swarm>
       <failOnMissingWebXml>false</failOnMissingWebXml>
    </properties>
 
