@@ -10,7 +10,7 @@
    <packaging>war</packaging>
 
    <properties>
-      <version.swarm>2017.1.1</version.swarm>
+      <version.swarm>2017.2.0</version.swarm>
       <failOnMissingWebXml>false</failOnMissingWebXml>
    </properties>
 
@@ -86,7 +86,7 @@
                         <addonId>org.jboss.forge.furnace.container:simple,${furnace.version}</addonId>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
 
-                        <addonId>org.jboss.forge.addon:wildfly-swarm,1.0.8.Final</addonId>
+                        <addonId>org.jboss.forge.addon:wildfly-swarm,${version.swarm}</addonId>
 
                         <addonId>io.fabric8.forge:camel,2.3.79</addonId>
                         <addonId>io.fabric8.forge:devops,2.3.79</addonId>
