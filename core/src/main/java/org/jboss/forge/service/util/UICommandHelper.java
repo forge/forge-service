@@ -247,6 +247,7 @@ public class UICommandHelper
    public void populateController(JsonObject content, CommandController controller)
    {
       JsonArray inputArray = content.getJsonArray("inputs");
+      assert inputArray != null : "'inputs' array not found in JSON content";
       for (int i = 0; i < inputArray.size(); i++)
       {
          JsonObject input = inputArray.getJsonObject(i);
