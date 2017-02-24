@@ -362,6 +362,7 @@ public class UICommandHelper
       return builder;
    }
 
+   @SuppressWarnings("unchecked")
    protected void addOptional(JsonObjectBuilder builder, String name, Object value)
    {
       if (value != null)
@@ -373,6 +374,18 @@ public class UICommandHelper
          else if (value instanceof Number)
          {
             builder.add(name, ((Number) value).intValue());
+         }
+         else if (value instanceof Iterable)
+         {
+            JsonArrayBuilder arrayBuilder = createArrayBuilder();
+            for (Object element : (Iterable<Object>) value)
+            {
+               if (element != null)
+               {
+                  arrayBuilder.add(element.toString());
+               }
+            }
+            builder.add(name, arrayBuilder);
          }
          else
          {
