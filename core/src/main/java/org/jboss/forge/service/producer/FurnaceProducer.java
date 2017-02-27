@@ -42,13 +42,13 @@ public class FurnaceProducer
 {
    private Furnace furnace;
 
-   public Furnace setup(File repoDir)
+   public Furnace setup(AddonRepositoryMode mode, File repoDir)
    {
       // Initialize Furnace
       ClassLoader ccl = Thread.currentThread().getContextClassLoader();
       furnace = create(ccl, ccl);
       furnace.setAddonCompatibilityStrategy(AddonCompatibilityStrategies.LENIENT);
-      furnace.addRepository(AddonRepositoryMode.IMMUTABLE, repoDir);
+      furnace.addRepository(mode, repoDir);
       return furnace;
    }
 
