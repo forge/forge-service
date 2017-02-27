@@ -25,6 +25,7 @@ import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.furnace.Furnace;
 import org.jboss.forge.furnace.addons.AddonRegistry;
+import org.jboss.forge.furnace.manager.AddonManager;
 
 /**
  * Produces {@link Furnace} service instances
@@ -39,6 +40,18 @@ public class FurnaceServiceProducer
    public FurnaceServiceProducer(Furnace furnace)
    {
       this.addonRegistry = furnace.getAddonRegistry();
+   }
+
+   @Produces
+   public AddonRegistry getAddonRegistry()
+   {
+      return this.addonRegistry;
+   }
+
+   @Produces
+   public AddonManager getAddonManager()
+   {
+      return addonRegistry.getServices(AddonManager.class).get();
    }
 
    @Produces
