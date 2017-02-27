@@ -19,13 +19,13 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
 import org.jboss.forge.addon.convert.ConverterFactory;
+import org.jboss.forge.addon.manager.watch.AddonWatchService;
 import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.ui.command.CommandFactory;
 import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
 import org.jboss.forge.furnace.Furnace;
 import org.jboss.forge.furnace.addons.AddonRegistry;
-import org.jboss.forge.furnace.manager.AddonManager;
 
 /**
  * Produces {@link Furnace} service instances
@@ -49,9 +49,9 @@ public class FurnaceServiceProducer
    }
 
    @Produces
-   public AddonManager getAddonManager()
+   public AddonWatchService getAddonWatchService()
    {
-      return addonRegistry.getServices(AddonManager.class).get();
+      return addonRegistry.getServices(AddonWatchService.class).get();
    }
 
    @Produces
