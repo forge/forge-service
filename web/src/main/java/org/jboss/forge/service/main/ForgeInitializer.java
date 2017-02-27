@@ -30,6 +30,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
 import org.jboss.forge.service.producer.FurnaceProducer;
 
 /**
@@ -59,7 +60,7 @@ public class ForgeInitializer implements ServletContextListener
          {
             LOG.warning("Found " + files.length + " addon files in directory: " + repoDir.getAbsolutePath());
          }
-         furnaceProducer.setup(repoDir);
+         furnaceProducer.setup(AddonRepositoryMode.IMMUTABLE, repoDir);
          furnaceProducer.start();
 
       }
