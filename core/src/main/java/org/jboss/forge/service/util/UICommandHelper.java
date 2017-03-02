@@ -16,6 +16,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.json.JsonArray;
@@ -80,8 +81,17 @@ public class UICommandHelper
       if (controller instanceof WizardCommandController)
       {
          stateBuilder.add("wizard", true);
-         stateBuilder.add("canMoveToNextStep", ((WizardCommandController) controller).canMoveToNextStep());
-         stateBuilder.add("canMoveToPreviousStep", ((WizardCommandController) controller).canMoveToPreviousStep());
+         WizardCommandController wizardController = (WizardCommandController) controller;
+         stateBuilder.add("canMoveToNextStep", wizardController.canMoveToNextStep());
+         stateBuilder.add("canMoveToPreviousStep", wizardController.canMoveToPreviousStep());
+         // Add flow
+         JsonArrayBuilder wizardNamesStepBuilder = createArrayBuilder();
+         List<UICommandMetadata> stepsMetadata = wizardController.getWizardStepsMetadata();
+         for (UICommandMetadata metadata : stepsMetadata)
+         {
+            wizardNamesStepBuilder.add(metadata.getName());
+         }
+         stateBuilder.add("steps", wizardNamesStepBuilder);
       }
       else
       {
