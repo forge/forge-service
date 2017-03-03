@@ -14,6 +14,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.beans.Transient;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -340,7 +341,7 @@ public class UICommandHelper
                   continue;
                }
                Method readMethod = pd.getReadMethod();
-               if (readMethod != null)
+               if (readMethod != null && readMethod.getAnnotation(Transient.class) == null)
                {
                   try
                   {
