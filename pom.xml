@@ -12,7 +12,7 @@
    <name>Forge Service :: Parent</name>
    <properties>
       <furnace.version>2.25.2.Final</furnace.version>
-      <forge.version>3.6.0.Alpha2</forge.version>
+      <forge.version>3.6.0.Final</forge.version>
       <junit.version>4.12</junit.version>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
