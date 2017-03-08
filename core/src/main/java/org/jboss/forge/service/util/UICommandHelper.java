@@ -18,6 +18,9 @@ import java.beans.Transient;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.json.JsonArray;
@@ -397,6 +400,15 @@ public class UICommandHelper
                }
             }
             builder.add(name, arrayBuilder);
+         }
+         else if (value instanceof Map)
+         {
+            JsonObjectBuilder objectBuilder = createObjectBuilder();
+            for (Entry<Object, Object> entry : ((Map<Object, Object>) value).entrySet())
+            {
+               addOptional(objectBuilder, Objects.toString(entry.getKey()), entry.getValue());
+            }
+            builder.add(name, objectBuilder);
          }
          else
          {
