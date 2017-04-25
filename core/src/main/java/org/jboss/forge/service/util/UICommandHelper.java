@@ -250,13 +250,13 @@ public class UICommandHelper
         if (controller instanceof WizardCommandController)
         {
             WizardCommandController wizardController = (WizardCommandController) controller;
+            wizardController.initialize();
             for (int i = 0; i < stepIndex; i++)
             {
-                wizardController.initialize();
                 populateController(content, wizardController);
                 if (wizardController.canMoveToNextStep())
                 {
-                    wizardController.next();
+                    wizardController.next().initialize();
                 }
                 else
                 {
