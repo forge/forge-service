@@ -246,22 +246,14 @@ public class UICommandHelper
     public void populateControllerAllInputs(JsonObject content, CommandController controller) throws Exception
     {
         populateController(content, controller);
-        int stepIndex = Math.max(content.getInt("stepIndex", 1), 1);
+        int stepIndex = content.getInt("stepIndex", 0);
         if (controller instanceof WizardCommandController)
         {
             WizardCommandController wizardController = (WizardCommandController) controller;
-            wizardController.initialize();
-            for (int i = 0; i < stepIndex; i++)
+            for (int i = 0; i < stepIndex && wizardController.canMoveToNextStep(); i++)
             {
+                wizardController.next().initialize();
                 populateController(content, wizardController);
-                if (wizardController.canMoveToNextStep())
-                {
-                    wizardController.next().initialize();
-                }
-                else
-                {
-                    break;
-                }
             }
         }
     }
