@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <parent>
       <groupId>org.jboss.forge</groupId>
@@ -10,7 +11,7 @@
    <packaging>war</packaging>
 
    <properties>
-      <version.swarm>2017.3.3</version.swarm>
+      <version.swarm>2017.6.1</version.swarm>
       <failOnMissingWebXml>false</failOnMissingWebXml>
    </properties>
 
@@ -69,6 +70,13 @@
             </configuration>
          </plugin>
          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+               <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+            </configuration>
+         </plugin>
+         <plugin>
             <groupId>org.jboss.forge.furnace</groupId>
             <artifactId>furnace-maven-plugin</artifactId>
             <executions>
@@ -87,11 +95,8 @@
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
 
                         <addonId>org.jboss.forge.addon:wildfly-swarm,${version.swarm}</addonId>
-			<!--
-                        <addonId>io.fabric8.forge:camel,2.3.79</addonId>
-                        <addonId>io.fabric8.forge:devops,2.3.79</addonId>
-                        <addonId>io.fabric8.forge:funktion,2.3.79</addonId>
-			-->
+                        <!-- <addonId>io.fabric8.forge:camel,2.3.79</addonId> <addonId>io.fabric8.forge:devops,2.3.79</addonId> 
+                           <addonId>io.fabric8.forge:funktion,2.3.79</addonId> -->
                      </addonIds>
                   </configuration>
                </execution>
