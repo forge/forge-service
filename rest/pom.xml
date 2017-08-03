@@ -21,6 +21,10 @@
          <artifactId>forge-service-core</artifactId>
          <version>1.0.1-SNAPSHOT</version>
       </dependency>
+      <dependency>
+         <groupId>org.jboss.forge.furnace</groupId>
+         <artifactId>furnace</artifactId>
+      </dependency>
       <!-- Test dependencies -->
       <dependency>
          <groupId>com.jayway.restassured</groupId>
