@@ -3,7 +3,7 @@
    <parent>
       <groupId>org.jboss.forge</groupId>
       <artifactId>forge-service-parent</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3.Final</version>
    </parent>
    <artifactId>forge-service-web</artifactId>
    <name>Forge Service :: Web</name>
@@ -35,7 +35,7 @@
       <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-service-rest</artifactId>
-         <version>1.0.3-SNAPSHOT</version>
+         <version>1.0.3.Final</version>
       </dependency>
       <!-- WildFly Swarm Fractions -->
       <dependency>
