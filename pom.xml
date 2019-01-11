@@ -11,8 +11,8 @@
    <packaging>pom</packaging>
    <name>Forge Service :: Parent</name>
    <properties>
-      <furnace.version>2.28.1.Final</furnace.version>
-      <forge.version>3.9.0.Final</forge.version>
+      <furnace.version>2.28.2.Final</furnace.version>
+      <forge.version>3.9.2.Final</forge.version>
       <junit.version>4.12</junit.version>
       <maven.compiler.source>1.8</maven.compiler.source>
       <maven.compiler.target>1.8</maven.compiler.target>
