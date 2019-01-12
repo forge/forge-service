@@ -3,7 +3,7 @@
    <parent>
       <groupId>org.jboss.forge</groupId>
       <artifactId>forge-service-parent</artifactId>
-      <version>1.0.5.Final</version>
+      <version>1.0.6-SNAPSHOT</version>
    </parent>
    <artifactId>forge-service-rest</artifactId>
    <name>Forge Service :: REST</name>
@@ -19,7 +19,7 @@
       <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-service-core</artifactId>
-         <version>1.0.5.Final</version>
+         <version>1.0.6-SNAPSHOT</version>
       </dependency>
       <dependency>
          <groupId>org.jboss.forge.furnace</groupId>
