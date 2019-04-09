@@ -19,5 +19,5 @@ How to run
 ----------
 
 - Run `mvn clean install` to build the whole project
-- Run `java -jar web/target/forge-service-swarm.jar`
+- Run `java -jar web/target/forge-service-thorntail.jar`
 - Open http://localhost:8080

@@ -10,16 +10,16 @@
    <packaging>war</packaging>
 
    <properties>
-      <version.swarm>2018.5.0</version.swarm>
+      <version.thorntail>2.4.0.Final</version.thorntail>
       <failOnMissingWebXml>false</failOnMissingWebXml>
    </properties>
 
    <dependencyManagement>
       <dependencies>
          <dependency>
-            <groupId>org.wildfly.swarm</groupId>
+            <groupId>io.thorntail</groupId>
             <artifactId>bom-all</artifactId>
-            <version>${version.swarm}</version>
+            <version>${version.thorntail}</version>
             <scope>import</scope>
             <type>pom</type>
          </dependency>
@@ -39,11 +39,11 @@
       </dependency>
       <!-- WildFly Swarm Fractions -->
       <dependency>
-         <groupId>org.wildfly.swarm</groupId>
+         <groupId>io.thorntail</groupId>
          <artifactId>cdi</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.wildfly.swarm</groupId>
+         <groupId>io.thorntail</groupId>
          <artifactId>jaxrs-jsonp</artifactId>
       </dependency>
    </dependencies>
@@ -81,10 +81,6 @@
                         <addonId>org.jboss.forge.furnace.container:cdi,${furnace.version}</addonId>
                         <addonId>org.jboss.forge.furnace.container:simple,${furnace.version}</addonId>
                         <addonId>org.jboss.forge.addon:core,${forge.version}</addonId>
-
-                        <addonId>org.jboss.forge.addon:wildfly-swarm,${version.swarm}</addonId>
-                        <!-- <addonId>io.fabric8.forge:camel,2.3.79</addonId> <addonId>io.fabric8.forge:devops,2.3.79</addonId> 
-                           <addonId>io.fabric8.forge:funktion,2.3.79</addonId> -->
                      </addonIds>
                   </configuration>
                </execution>
@@ -92,9 +88,9 @@
          </plugin>
 
          <plugin>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>wildfly-swarm-plugin</artifactId>
-            <version>${version.swarm}</version>
+            <groupId>io.thorntail</groupId>
+            <artifactId>thorntail-maven-plugin</artifactId>
+            <version>${version.thorntail}</version>
             <executions>
                <execution>
                   <goals>
